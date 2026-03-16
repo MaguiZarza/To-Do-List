@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de cosas que hacer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f4e6d7;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: #fff8f0;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(110, 70, 40, 0.15);
+            border: 1px solid #e2d3c1;
+        }
+
+        h2 {
+            color: #6b4f3c;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed #dbb88c;
+            padding-bottom: 10px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e0cfbc;
+            border-radius: 40px;
+            font-size: 16px;
+            background: #fefaf5;
+            transition: all 0.3s;
+            color: #4a3729;
+        }
+
+        input[type="text"]:focus {
+            border-color: #b48c63;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(180, 140, 99, 0.2);
+            background: #fff;
+        }
+
+        button {
+            background: #8b6f50;
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(110, 70, 40, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: #6b4f3c;
+            transform: scale(1.02);
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #dbb88c, transparent);
+            margin: 25px 0;
+        }
+
+        .task {
+            background: #faf1e8;
+            padding: 15px 20px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-left: 8px solid #c9a77d;
+            box-shadow: 0 5px 12px rgba(130, 90, 50, 0.08);
+            transition: all 0.2s;
+        }
+
+        .task:hover {
+            background: #f7e8db;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(120, 75, 40, 0.12);
+        }
+
+        .task span {
+            font-size: 18px;
+            color: #4a3729;
+            word-break: break-word;
+            padding-right: 10px;
+        }
+
+        .task.Completado {
+            border-left-color: #a58d71;
+            background: #ede3d7;
+            opacity: 0.85;
+        }
+
+        .task.Completado span strike {
+            color: #7e6b58;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .actions a {
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        /* Botón + (completar) */
+        .actions a:first-child {
+            background: #b48c63;
+            color: white;
+            box-shadow: 0 4px 8px #d9b48f;
+        }
+
+        .actions a:first-child:hover {
+            background: #9b7249;
+            transform: rotate(90deg);
+        }
+
+        /* Botón x (eliminar) */
+        .actions a:last-child {
+            background: #bc8f6b;
+            color: #2e221a;
+            font-size: 28px;
+            line-height: 1;
+            box-shadow: 0 4px 8px #d9b48f;
+        }
+
+        .actions a:last-child:hover {
+            background: #a5724b;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .empty {
+            text-align: center;
+            color: #b29175;
+            font-size: 18px;
+            padding: 25px 0;
+            background: #faf1e6;
+            border-radius: 60px;
+            border: 2px dashed #d2b595;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Mi Lista</h2>
+
+        <form method="POST" action="/">
+            {% csrf_token %}
+            {{ form.title }}
+            <button type="submit">Agregar</button>
+        </form>
+    
+        <hr>
+
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="task {% if task.completed %}Completado{% endif %}">
+                    <span>
+                        {% if task.completed %}
+                            <strike>{{ task.title }}</strike>
+                        {% else %}
+                            {{ task.title }}
+                        {% endif %}
+                    </span>
+                    <div class="actions">
+                        <a href="{% url 'update_task' task.id %}">+</a>
+                        <a href="{% url 'delete_task' task.id %}">×</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty"> Agrega una tarea! </p>
+        {% endif %}
+    </div>
+</body>
+</html>
