@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminar tarea</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4e6d7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 450px;
+      width: 100%;
+      background: #fff8f0;
+      padding: 40px 30px;
+      border-radius: 30px;
+      box-shadow: 0 20px 35px rgba(110, 70, 40, 0.2);
+      border: 1px solid #e2d3c1;
+      text-align: center;
+    }
+
+    h3 {
+      color: #6b4f3c;
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+
+    .highlight {
+      background: #f3e1d1;
+      color: #4a3729;
+      padding: 5px 18px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 28px;
+      border-left: 5px solid #b48c63;
+      box-shadow: 0 4px 10px rgba(180, 140, 99, 0.2);
+      word-break: break-word;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+
+    button {
+      background: #bc6f4b;
+      color: white;
+      border: none;
+      padding: 16px 35px;
+      border-radius: 60px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      max-width: 250px;
+      box-shadow: 0 8px 15px rgba(150, 80, 40, 0.25);
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      background: #9e5434;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 20px rgba(130, 65, 30, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    a {
+      color: #8b6f50;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 12px 30px;
+      border-radius: 60px;
+      background: #ede3d7;
+      transition: all 0.3s;
+      display: inline-block;
+      width: 100%;
+      max-width: 250px;
+      border: 2px solid transparent;
+    }
+
+    a:hover {
+      background: #dccbbb;
+      color: #4a3729;
+      border-color: #b48c63;
+      transform: scale(1.02);
+    }
+
+    .container::before {
+      content: "⚠️";
+      font-size: 48px;
+      display: block;
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>¿Estás seguro de que quieres eliminar?<br><span class="highlight">"{{ task }}"</span></h3>
+
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit">Sí, eliminar</button>
+      <a href="/">Cancelar</a>
+    </form>
+  </div>
+</body>
+</html>
+</html>
